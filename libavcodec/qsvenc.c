@@ -376,7 +376,6 @@ static int init_video_param(AVCodecContext *avctx, QSVEncContext *q)
     q->param.mfx.NumSlice           = avctx->slices;
     q->param.mfx.NumRefFrame        = FFMAX(0, avctx->refs);
     q->param.mfx.EncodedOrder       = 0;
-    q->param.mfx.BufferSizeInKB     = q->buffer_size/8000;
 
     desc = av_pix_fmt_desc_get(sw_format);
     if (!desc)
@@ -445,12 +444,16 @@ static int init_video_param(AVCodecContext *avctx, QSVEncContext *q)
     if (ret < 0)
         return ret;
 
+    if (!avctx->rc_buffer_size)
+        avctx->rc_buffer_size = q->buffer_size;
+
     switch (q->param.mfx.RateControlMethod) {
     case MFX_RATECONTROL_CBR:
     case MFX_RATECONTROL_VBR:
 #if QSV_HAVE_VCM
     case MFX_RATECONTROL_VCM:
 #endif
+        q->param.mfx.BufferSizeInKB   = avctx->rc_buffer_size / 8000;
         q->param.mfx.InitialDelayInKB = avctx->rc_initial_buffer_occupancy / 1000;
         q->param.mfx.TargetKbps       = avctx->bit_rate / 1000;
         q->param.mfx.MaxKbps          = avctx->rc_max_rate / 1000;
