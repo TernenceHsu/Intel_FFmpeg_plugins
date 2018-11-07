@@ -192,8 +192,8 @@ typedef struct QSVEncContext {
 
     // options for mfxExtCodingOption3
     unsigned short num_slice_I;
-    unsigned short winbrc_maxavg_kbps;
-    unsigned short win_brc_size;
+    unsigned int   winbrc_maxavg_kbps;
+    unsigned int   win_brc_size;
     unsigned short qvbr_quality;
     unsigned short direct_bias_adj;
     unsigned short enable_global_motion_bias;
