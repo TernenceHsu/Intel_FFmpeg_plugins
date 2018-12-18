@@ -15,3 +15,13 @@ NOTICE
 ------
 
  - Non system dependencies (e.g. libx264, libvpx) are disabled by default.
+
+---
+
+### 编译
+先安装 intel media code 环境；
+```
+./build.sh
+./config.sh
+```
+
